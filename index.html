@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Serviceberry Gardens — Native Landscape & Garden Design</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Hanken+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    /* palette — drawn from a Piedmont woodland edge */
+    --Serviceberry Gardens:#14271D;   /* deep pine — primary dark ground */
+    --Serviceberry Gardens-2:#1B3024;
+    --canopy:#2E4A37;
+    --moss:#456540;
+    --foliage:#82A56C;      /* living green — accents, hover */
+    --oat:#ECE7D6;          /* warm light surface */
+    --oat-deep:#DED6BF;
+    --bloom:#D6A23C;        /* goldenrod — the bloom accent */
+    --bloom-soft:#EAC97E;
+    --plum:#6E5285;         /* coneflower — used very sparingly */
+    --bark:#241F17;         /* dark text on light */
+    --bark-soft:#5C5446;    /* muted text on light */
+    --paper:#E9E3D2;        /* text on dark */
+    --paper-mute:#A7B79E;   /* muted sage text on dark */
+    --line-dark:#2C4536;
+    --line-light:#D5CCB4;
+
+    --display:"Fraunces", Georgia, serif;
+    --body:"Hanken Grotesk", system-ui, -apple-system, sans-serif;
+    --mono:"DM Mono", ui-monospace, monospace;
+
+    --wrap:1180px;
+    --r:14px;
+    --ease:cubic-bezier(.2,.6,.2,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+  body{
+    font-family:var(--body);
+    background:var(--oat);
+    color:var(--bark);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+
+  /* ---------- type ---------- */
+  h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;letter-spacing:-.01em}
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;font-weight:400;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--moss);
+  }
+  .eyebrow.on-dark{color:var(--bloom-soft)}
+
+  a{color:inherit}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55em;
+    font-family:var(--body);font-weight:600;font-size:.98rem;
+    padding:.85em 1.4em;border-radius:100px;border:1px solid transparent;
+    text-decoration:none;cursor:pointer;transition:transform .25s var(--ease),background .25s,color .25s,border-color .25s;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn-bloom{background:var(--bloom);color:#231a09}
+  .btn-bloom:hover{background:var(--bloom-soft)}
+  .btn-ghost{border-color:var(--paper-mute);color:var(--paper)}
+  .btn-ghost:hover{border-color:var(--bloom);color:var(--bloom-soft)}
+  .btn-dark{background:var(--Serviceberry Gardens);color:var(--paper)}
+  .btn-dark:hover{background:var(--canopy)}
+  .btn .arrow{transition:transform .25s var(--ease)}
+  .btn:hover .arrow{transform:translateX(3px)}
+
+  :where(a,button):focus-visible{outline:2.5px solid var(--bloom);outline-offset:3px;border-radius:6px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--Serviceberry Gardens) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-dark);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:baseline;gap:.6rem;color:var(--paper);text-decoration:none}
+  .brand .mark{font-family:var(--display);font-size:1.5rem;letter-spacing:-.02em}
+  .brand .tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--paper-mute)}
+  .nav-links{display:flex;gap:2rem;align-items:center}
+  .nav-links a{color:var(--paper-mute);text-decoration:none;font-size:.92rem;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--bloom-soft)}
+  .nav-links .btn{padding:.6em 1.1em;font-size:.88rem}
+  @media (max-width:760px){ .nav-links a:not(.btn){display:none} .brand .tag{display:none} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;background:var(--Serviceberry Gardens);color:var(--paper);
+    padding:clamp(70px,11vw,130px) 0 clamp(60px,8vw,100px);
+    overflow:hidden;
+  }
+  .hero::before{ /* soft canopy light */
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 78% -10%, color-mix(in srgb,var(--bloom) 22%, transparent), transparent 55%),
+      radial-gradient(90% 90% at 10% 110%, color-mix(in srgb,var(--moss) 40%, transparent), transparent 60%);
+    pointer-events:none;
+  }
+  .hero .wrap{position:relative;z-index:1}
+  .hero h1{
+    font-size:clamp(2.7rem,7.5vw,5.4rem);margin:.4em 0 .1em;max-width:14ch;
+    font-weight:400;
+  }
+  .hero h1 em{font-style:italic;color:var(--bloom-soft)}
+  .hero p.lede{font-size:clamp(1.05rem,1.8vw,1.32rem);color:var(--paper);max-width:54ch;margin-top:1.1rem;opacity:.92}
+  .hero .cta-row{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.3rem}
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:1.6rem;margin-top:3.2rem;padding-top:1.6rem;
+    border-top:1px solid var(--line-dark);
+  }
+  .hero-meta div{font-size:.9rem;color:var(--paper-mute)}
+  .hero-meta b{display:block;font-family:var(--display);font-size:1.05rem;color:var(--paper);font-weight:500}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none} }
+
+  /* ---------- generic section ---------- */
+  section{padding:clamp(64px,9vw,120px) 0}
+  .section-head{max-width:60ch}
+  .section-head h2{font-size:clamp(2rem,4.5vw,3.2rem);margin:.45em 0 .35em}
+  .section-head p{font-size:1.12rem;color:var(--bark-soft)}
+
+  /* ---------- approach ---------- */
+  .approach{background:var(--oat)}
+  .approach-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(32px,5vw,68px);margin-top:3rem;align-items:start}
+  @media (max-width:880px){ .approach-grid{grid-template-columns:1fr} }
+
+  .tags{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media (max-width:520px){ .tags{grid-template-columns:1fr} }
+  .tag-card{
+    background:#fff;border:1px solid var(--line-light);border-radius:var(--r);
+    padding:24px 22px;position:relative;transition:transform .3s var(--ease),box-shadow .3s;
+  }
+  .tag-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px -18px rgba(20,39,29,.45)}
+  .tag-card .pin{
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--moss);display:flex;align-items:center;gap:.5em;margin-bottom:.7rem;
+  }
+  .tag-card .pin::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--bloom)}
+  .tag-card h3{font-size:1.32rem;margin-bottom:.4rem}
+  .tag-card p{font-size:.96rem;color:var(--bark-soft)}
+
+  /* ground profile illustration */
+  .profile{
+    background:var(--Serviceberry Gardens);border-radius:var(--r);overflow:hidden;
+    border:1px solid var(--line-dark);
+  }
+  .profile figcaption{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--paper-mute);
+    padding:14px 18px;border-top:1px solid var(--line-dark);text-transform:uppercase;
+  }
+  .profile svg{display:block;width:100%;height:auto}
+
+  .ethos{
+    margin-top:clamp(48px,7vw,90px);text-align:center;max-width:30ch;margin-inline:auto;
+  }
+  .ethos blockquote{font-family:var(--display);font-style:italic;font-size:clamp(1.6rem,4vw,2.5rem);line-height:1.18;color:var(--canopy)}
+  .ethos cite{display:block;margin-top:1rem;font-style:normal;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--moss)}
+
+  /* ---------- work / before-after ---------- */
+  .work{background:var(--Serviceberry Gardens-2);color:var(--paper)}
+  .work .section-head h2{color:var(--paper)}
+  .work .section-head p{color:var(--paper-mute)}
+  .projects{display:grid;gap:clamp(40px,6vw,72px);margin-top:3.2rem}
+
+  .project{display:grid;grid-template-columns:1fr;gap:1.4rem}
+  .project-meta{display:flex;flex-wrap:wrap;gap:1.4rem 2rem;align-items:baseline}
+  .project-meta h3{font-size:clamp(1.5rem,3vw,2.1rem);color:var(--paper)}
+  .project-meta .kind{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bloom-soft);padding:.3em .8em;border:1px solid var(--line-dark);border-radius:100px}
+  .project p.note{color:var(--paper-mute);max-width:62ch;font-size:1rem}
+  .plant-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem}
+  .plant-list span{font-family:var(--mono);font-size:.72rem;color:var(--paper);background:rgba(255,255,255,.06);border:1px solid var(--line-dark);border-radius:6px;padding:.28em .6em}
+
+  /* the draggable before/after */
+  .ba{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line-dark);touch-action:pan-y;user-select:none}
+  .ba-frame{position:relative;aspect-ratio:16/10;overflow:hidden}
+  .ba-frame img,.ba-frame svg{display:block;width:100%;height:100%;object-fit:cover}
+  .ba-before,.ba-after{position:absolute;inset:0}
+  .ba-after{clip-path:inset(0 calc(100% - var(--pos,55%)) 0 0)}
+  .ba-cap{
+    position:absolute;top:14px;font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;
+    text-transform:uppercase;padding:.35em .7em;border-radius:6px;color:#fff;
+    background:rgba(20,39,29,.62);backdrop-filter:blur(3px);pointer-events:none;z-index:3;
+  }
+  .ba-cap.before{left:14px}
+  .ba-cap.after{right:14px;background:rgba(214,162,60,.85);color:#231a09}
+  .ba-handle{
+    position:absolute;top:0;bottom:0;left:var(--pos,55%);width:2px;background:var(--bloom);
+    transform:translateX(-1px);z-index:4;cursor:ew-resize;border:none;padding:0;
+  }
+  .ba-handle::after{
+    content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:42px;height:42px;border-radius:50%;background:var(--bloom);
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+    background-image:
+      linear-gradient(currentColor,currentColor),linear-gradient(currentColor,currentColor);
+    color:#231a09;background-size:2px 12px,2px 12px;background-position:calc(50% - 6px) 50%,calc(50% + 6px) 50%;
+    background-repeat:no-repeat;
+  }
+  .ba-handle:focus-visible{outline:none}
+  .ba-handle:focus-visible::after{outline:3px solid var(--paper);outline-offset:3px}
+
+  /* ---------- process ---------- */
+  .process{background:var(--oat)}
+  .steps{margin-top:3rem;border-top:1px solid var(--line-light)}
+  .step{
+    display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,56px);
+    padding:clamp(30px,4vw,46px) 0;border-bottom:1px solid var(--line-light);align-items:start;
+    position:relative;
+  }
+  .step-num{font-family:var(--display);font-size:clamp(2.2rem,5vw,3.4rem);color:var(--bloom);line-height:1;font-weight:500}
+  .step-body h3{font-size:clamp(1.35rem,2.6vw,1.85rem);margin-bottom:.5rem}
+  .step-body p{color:var(--bark-soft);max-width:60ch}
+  .step-body .how{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  .step-body .how span{
+    font-family:var(--mono);font-size:.74rem;color:var(--canopy);
+    background:#fff;border:1px solid var(--line-light);border-radius:100px;padding:.4em .9em;
+  }
+  .step .remote{display:inline-block;margin-left:.6rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--moss);padding:.25em .6em;border-radius:5px;vertical-align:middle}
+
+  /* ---------- audience ---------- */
+  .audience{background:var(--canopy);color:var(--paper)}
+  .audience .duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,48px);margin-top:2.6rem}
+  @media (max-width:720px){ .audience .duo{grid-template-columns:1fr} }
+  .aud-card{border:1px solid var(--line-dark);border-radius:var(--r);padding:32px;background:color-mix(in srgb,var(--Serviceberry Gardens) 45%,transparent)}
+  .aud-card .eyebrow{color:var(--bloom-soft)}
+  .aud-card h3{font-size:1.7rem;margin:.5rem 0 .6rem;color:var(--paper)}
+  .aud-card p{color:var(--paper-mute)}
+  .audience .small-note{margin-top:2.4rem;font-family:var(--mono);font-size:.8rem;color:var(--bloom-soft);text-align:center;letter-spacing:.04em}
+
+  /* ---------- contact ---------- */
+  .contact{background:var(--Serviceberry Gardens);color:var(--paper);text-align:center}
+  .contact h2{font-size:clamp(2.2rem,5.5vw,4rem);max-width:18ch;margin:.5rem auto .4rem}
+  .contact h2 em{font-style:italic;color:var(--bloom-soft)}
+  .contact p.sub{color:var(--paper-mute);max-width:52ch;margin:0 auto 2.2rem;font-size:1.1rem}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center}
+  .contact-line{font-family:var(--mono);font-size:.9rem;color:var(--paper-mute);margin-top:2rem}
+  .contact-line a{color:var(--bloom-soft);text-decoration:none}
+
+  /* ---------- footer ---------- */
+  footer{background:#0F1D15;color:var(--paper-mute);padding:56px 0 40px;border-top:1px solid var(--line-dark)}
+  .foot-grid{display:flex;flex-wrap:wrap;gap:2rem;justify-content:space-between;align-items:flex-start}
+  footer .mark{font-family:var(--display);font-size:1.4rem;color:var(--paper)}
+  footer .ethos-line{max-width:36ch;font-size:.92rem;margin-top:.6rem}
+  footer .f-contact{font-family:var(--mono);font-size:.82rem;line-height:1.9}
+  footer .f-contact a{color:var(--paper);text-decoration:none}
+  footer .legal{width:100%;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line-dark);font-family:var(--mono);font-size:.72rem;letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="mark">Serviceberry Gardens</span>
+      <span class="tag">Native Landscape & Garden Design</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#approach">Approach</a>
+      <a href="#work">The work</a>
+      <a href="#process">Process</a>
+      <a href="#contact" class="btn btn-bloom">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow on-dark">Native-first design · Residential & small commercial · Georgia Piedmont</p>
+    <h1>We leave the land <em>better</em> than we found it.</h1>
+    <p class="lede">Small-scale gardens and landscapes built around plants native to the Southeast — designed for pollinators, birds, living soil, and the people who get to live alongside them.</p>
+    <div class="cta-row">
+      <a href="#work" class="btn btn-bloom">See the work <span class="arrow">→</span></a>
+      <a href="#process" class="btn btn-ghost">How it works</a>
+    </div>
+    <div class="hero-meta">
+      <div><b>Native-led</b>Plants chosen for this place</div>
+      <div><b>Wildlife-first</b>Habitat, not just curb appeal</div>
+      <div><b>Soil-building</b>Healthier ground every season</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== APPROACH ===================== -->
+<section class="approach" id="approach">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">What "eco-conscious" means here</p>
+      <h2>A garden is a community, not a decoration.</h2>
+      <p>Every choice leans toward plants that belong here — the ones that feed insects, shelter birds, hold water, and build soil. The result is a landscape that looks alive because it <em>is</em>, and that asks less of you with each passing year.</p>
+    </div>
+
+    <div class="approach-grid">
+      <div class="tags reveal">
+        <div class="tag-card">
+          <div class="pin">Native-first</div>
+          <h3>Rooted in this place</h3>
+          <p>Designs built on Southeastern natives — serviceberry, oakleaf hydrangea, little bluestem, coneflower — plants adapted to our clay, heat, and rainfall.</p>
+        </div>
+        <div class="tag-card">
+          <div class="pin">For wildlife</div>
+          <h3>Habitat that works</h3>
+          <p>Keystone plants like native oaks and goldenrod feed the caterpillars and pollinators that songbirds depend on. A yard becomes part of a corridor.</p>
+        </div>
+        <div class="tag-card">
+          <div class="pin">For people</div>
+          <h3>Made to be lived in</h3>
+          <p>Beauty, shade, fragrance, cut flowers, and quiet places to sit. Wildness and care, held in balance so a space feels tended, not abandoned.</p>
+        </div>
+        <div class="tag-card">
+          <div class="pin">For the soil</div>
+          <h3>Ground that gets richer</h3>
+          <p>Deep-rooted plants, leaf litter left in place, and no needless chemicals — so soil life rebuilds, water soaks in, and the land stores more than it loses.</p>
+        </div>
+      </div>
+
+      <!-- Ground-profile illustration: planting in layers -->
+      <figure class="profile reveal" aria-label="A cross-section of a layered native planting, from canopy down to living soil and roots">
+        <svg viewBox="0 0 420 460" role="img" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1B3024"/><stop offset="1" stop-color="#14271D"/>
+            </linearGradient>
+          </defs>
+          <rect width="420" height="460" fill="url(#sky)"/>
+          <!-- canopy tree -->
+          <g fill="#456540">
+            <ellipse cx="120" cy="78" rx="92" ry="58"/>
+            <ellipse cx="250" cy="64" rx="70" ry="46"/>
+          </g>
+          <rect x="138" y="118" width="9" height="150" rx="3" fill="#3a2f22"/>
+          <!-- Serviceberry Gardens -->
+          <g fill="#5a7a4e"><ellipse cx="300" cy="150" rx="56" ry="34"/></g>
+          <rect x="296" y="178" width="6" height="80" rx="3" fill="#3a2f22"/>
+          <!-- shrub layer -->
+          <g fill="#6d9159">
+            <circle cx="70" cy="210" r="34"/><circle cx="110" cy="222" r="28"/>
+          </g>
+          <!-- herbaceous + blooms -->
+          <g>
+            <rect x="20" y="250" width="4" height="60" fill="#7ca06a"/>
+            <circle cx="22" cy="248" r="9" fill="#D6A23C"/>
+            <rect x="60" y="256" width="4" height="54" fill="#7ca06a"/>
+            <circle cx="62" cy="254" r="8" fill="#6E5285"/>
+            <rect x="120" y="252" width="4" height="58" fill="#7ca06a"/>
+            <circle cx="122" cy="250" r="9" fill="#D6A23C"/>
+            <rect x="175" y="258" width="4" height="52" fill="#7ca06a"/>
+            <circle cx="177" cy="256" r="8" fill="#EAC97E"/>
+            <!-- grasses -->
+            <g stroke="#9bb47e" stroke-width="3" fill="none" stroke-linecap="round">
+              <path d="M250 312 q-6 -40 -16 -56"/><path d="M258 312 q2 -44 10 -60"/>
+              <path d="M268 312 q8 -38 22 -52"/>
+              <path d="M320 312 q-6 -40 -16 -56"/><path d="M330 312 q4 -44 14 -58"/>
+              <path d="M392 312 q-8 -42 -20 -56"/><path d="M400 312 q4 -40 14 -54"/>
+            </g>
+          </g>
+          <!-- groundcover -->
+          <rect x="0" y="300" width="420" height="22" fill="#4f7444"/>
+          <!-- soil -->
+          <rect x="0" y="322" width="420" height="138" fill="#2a2014"/>
+          <!-- roots -->
+          <g stroke="#5e4a30" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".9">
+            <path d="M22 322 q4 50 -8 110"/><path d="M122 322 q-4 60 10 120"/>
+            <path d="M177 322 q6 40 -4 96"/><path d="M70 322 q10 70 -6 130"/>
+            <path d="M300 322 q-8 80 6 130"/>
+          </g>
+          <g fill="#caa05a" font-family="DM Mono, monospace" font-size="11" letter-spacing="1">
+            <text x="14" y="40">CANOPY</text>
+            <text x="270" y="150">Serviceberry Gardens</text>
+            <text x="14" y="190">SHRUB</text>
+            <text x="200" y="246">HERBS &amp; BLOOMS</text>
+            <text x="320" y="316" fill="#9bb47e">GRASSES</text>
+            <text x="14" y="416" fill="#caa05a">LIVING SOIL &amp; ROOTS</text>
+          </g>
+        </svg>
+        <figcaption>// Designed in layers — the way a healthy ecosystem grows.</figcaption>
+      </figure>
+    </div>
+
+    <div class="ethos reveal">
+      <blockquote>"The goal is simple: hand back a piece of ground healthier than I found it."</blockquote>
+      <cite>— The promise behind every project</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WORK ===================== -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow on-dark">The work · drag to reveal</p>
+      <h2>Before, and after.</h2>
+      <p>Two transformations. Drag the slider on each — or use your arrow keys — to see a tired, thirsty space become a living one.</p>
+    </div>
+
+    <div class="projects">
+
+      <!-- ===== PROJECT 1 ===== -->
+      <article class="project reveal">
+        <div class="ba" data-pos="55">
+          <div class="ba-frame">
+            <span class="ba-cap before">Before</span>
+            <span class="ba-cap after">After</span>
+
+            <!-- REPLACE WITH BEFORE PHOTO (use an <img>, delete this svg) -->
+            <div class="ba-before" aria-hidden="true">
+              <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="500" fill="#aeb6a0"/>
+                <rect width="800" height="300" fill="#b9c2ab"/>
+                <!-- house -->
+                <rect x="40" y="120" width="220" height="180" fill="#cfc7b4"/>
+                <polygon points="30,120 150,60 270,120" fill="#9a8f78"/>
+                <rect x="120" y="210" width="48" height="90" fill="#7d745f"/>
+                <!-- flat lawn -->
+                <rect y="300" width="800" height="200" fill="#8ca06f"/>
+                <!-- lonely boxwoods -->
+                <circle cx="360" cy="320" r="30" fill="#6f8456"/>
+                <circle cx="440" cy="322" r="28" fill="#6f8456"/>
+                <circle cx="520" cy="320" r="30" fill="#6f8456"/>
+              </svg>
+            </div>
+
+            <!-- REPLACE WITH AFTER PHOTO (use an <img>, delete this svg) -->
+            <div class="ba-after" aria-hidden="true">
+              <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="500" fill="#cdd8b5"/>
+                <rect width="800" height="300" fill="#d7e0c2"/>
+                <rect x="40" y="120" width="220" height="180" fill="#cfc7b4"/>
+                <polygon points="30,120 150,60 270,120" fill="#9a8f78"/>
+                <rect x="120" y="210" width="48" height="90" fill="#7d745f"/>
+                <!-- canopy tree -->
+                <ellipse cx="650" cy="150" rx="120" ry="90" fill="#5a7a4e"/>
+                <rect x="642" y="220" width="14" height="90" fill="#3a2f22"/>
+                <!-- layered bed -->
+                <rect y="300" width="800" height="200" fill="#4f7444"/>
+                <g fill="#6d9159"><circle cx="120" cy="320" r="44"/><circle cx="190" cy="334" r="34"/></g>
+                <!-- grasses -->
+                <g stroke="#9bb47e" stroke-width="6" fill="none" stroke-linecap="round">
+                  <path d="M300 440 q-10 -80 -28 -110"/><path d="M330 440 q6 -86 22 -116"/>
+                  <path d="M560 440 q-10 -80 -28 -110"/><path d="M590 440 q6 -86 22 -116"/>
+                </g>
+                <!-- blooms -->
+                <g><rect x="380" y="350" width="7" height="90" fill="#7ca06a"/><circle cx="383" cy="346" r="17" fill="#D6A23C"/></g>
+                <g><rect x="430" y="360" width="7" height="80" fill="#7ca06a"/><circle cx="433" cy="356" r="15" fill="#6E5285"/></g>
+                <g><rect x="480" y="352" width="7" height="88" fill="#7ca06a"/><circle cx="483" cy="348" r="17" fill="#EAC97E"/></g>
+                <!-- pollinators -->
+                <g fill="#231a09"><ellipse cx="360" cy="300" rx="7" ry="4"/><ellipse cx="470" cy="290" rx="6" ry="3.5"/></g>
+              </svg>
+            </div>
+
+            <button class="ba-handle" role="slider" tabindex="0"
+              aria-label="Reveal the after design for the front-yard project"
+              aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"></button>
+          </div>
+        </div>
+
+        <div class="project-meta">
+          <h3>Front-yard meadow border</h3>
+          <span class="kind">Residential</span>
+        </div>
+        <p class="note">A thirsty turf lawn and three tired boxwoods became a layered, low-water border that blooms from spring through frost and hums with bees by June.</p>
+        <div class="plant-list">
+          <span>Little bluestem</span><span>Purple coneflower</span><span>Black-eyed Susan</span><span>Aromatic aster</span><span>Oakleaf hydrangea</span>
+        </div>
+      </article>
+
+      <!-- ===== PROJECT 2 ===== -->
+      <article class="project reveal">
+        <div class="ba" data-pos="50">
+          <div class="ba-frame">
+            <span class="ba-cap before">Before</span>
+            <span class="ba-cap after">After</span>
+
+            <!-- REPLACE WITH BEFORE PHOTO -->
+            <div class="ba-before" aria-hidden="true">
+              <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="500" fill="#c3c3bb"/>
+                <rect y="320" width="800" height="180" fill="#9b9f8c"/>
+                <!-- storefront -->
+                <rect x="60" y="120" width="680" height="200" fill="#d3cdbd"/>
+                <rect x="100" y="160" width="120" height="160" fill="#a7a08c"/>
+                <rect x="340" y="160" width="120" height="160" fill="#a7a08c"/>
+                <rect x="580" y="160" width="120" height="160" fill="#a7a08c"/>
+                <!-- bare mulch strip + empty pots -->
+                <rect y="320" width="800" height="40" fill="#7a6a52"/>
+                <rect x="150" y="330" width="40" height="50" fill="#8a8270"/>
+                <rect x="600" y="330" width="40" height="50" fill="#8a8270"/>
+              </svg>
+            </div>
+
+            <!-- REPLACE WITH AFTER PHOTO -->
+            <div class="ba-after" aria-hidden="true">
+              <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="500" fill="#d7e0c2"/>
+                <rect y="320" width="800" height="180" fill="#4f7444"/>
+                <rect x="60" y="120" width="680" height="200" fill="#d3cdbd"/>
+                <rect x="100" y="160" width="120" height="160" fill="#9fb98f"/>
+                <rect x="340" y="160" width="120" height="160" fill="#9fb98f"/>
+                <rect x="580" y="160" width="120" height="160" fill="#9fb98f"/>
+                <!-- planters full of natives -->
+                <g fill="#6d9159"><circle cx="120" cy="330" r="40"/><circle cx="700" cy="330" r="40"/></g>
+                <g stroke="#9bb47e" stroke-width="6" fill="none" stroke-linecap="round">
+                  <path d="M240 470 q-10 -80 -28 -110"/><path d="M270 470 q6 -86 22 -116"/>
+                  <path d="M520 470 q-10 -80 -28 -110"/><path d="M550 470 q6 -86 22 -116"/>
+                </g>
+                <g><rect x="330" y="380" width="7" height="90" fill="#7ca06a"/><circle cx="333" cy="376" r="16" fill="#D6A23C"/></g>
+                <g><rect x="400" y="386" width="7" height="84" fill="#7ca06a"/><circle cx="403" cy="382" r="15" fill="#EAC97E"/></g>
+                <g><rect x="470" y="380" width="7" height="90" fill="#7ca06a"/><circle cx="473" cy="376" r="16" fill="#6E5285"/></g>
+                <g fill="#231a09"><ellipse cx="300" cy="350" rx="7" ry="4"/></g>
+              </svg>
+            </div>
+
+            <button class="ba-handle" role="slider" tabindex="0"
+              aria-label="Reveal the after design for the storefront project"
+              aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"></button>
+          </div>
+        </div>
+
+        <div class="project-meta">
+          <h3>Storefront entry plantings</h3>
+          <span class="kind">Small commercial</span>
+        </div>
+        <p class="note">Bare mulch and empty planters at a shopfront entrance became a tough, four-season native display that needs little water and gives the block its own pollinator stop.</p>
+        <div class="plant-list">
+          <span>Switchgrass</span><span>Mountain mint</span><span>Goldenrod</span><span>Blue wood aster</span><span>Christmas fern</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps, mostly painless.</h2>
+      <p>Designed to respect your time: we do the thinking and planning before anyone schedules a visit, so the on-site day is focused and the install is the only big push.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Goals &amp; site, gathered remotely <span class="remote">No visit yet</span></h3>
+          <p>We start with a conversation about what you want — habitat, color, low maintenance, food, privacy — and your budget. Then you send photos, a rough sketch or measurements, and notes on sun, water, and problem spots. I review it all and come back with a direction before we ever meet.</p>
+          <div class="how"><span>Intro call</span><span>You share photos &amp; info</span><span>Sun &amp; site notes</span><span>First direction</span></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>On-site consultation</h3>
+          <p>Now we walk the space together. I check the soil, drainage, light, and existing plants worth keeping, confirm what will thrive where, and refine the plan into a concrete planting design with plant choices, quantities, and a clear cost.</p>
+          <div class="how"><span>Walk-through</span><span>Soil &amp; drainage check</span><span>Final planting plan</span><span>Quote</span></div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>Sourcing &amp; install</h3>
+          <p>I source healthy, locally-grown native stock, prep the beds to set the plants up for life, and install — placing everything in layers so the planting can fill in and largely take care of itself. You get simple notes on watering it in and what to expect through the first year.</p>
+          <div class="how"><span>Native sourcing</span><span>Bed prep</span><span>Planting</span><span>First-year care notes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== AUDIENCE ===================== -->
+<section class="audience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow on-dark">Who I work with</p>
+      <h2 style="color:var(--paper)">Homes and small storefronts alike.</h2>
+    </div>
+    <div class="duo">
+      <div class="aud-card reveal">
+        <p class="eyebrow">Residential</p>
+        <h3>Yards, borders &amp; whole gardens</h3>
+        <p>Front-yard meadows, pollinator borders, foundation replantings, shade gardens — from a single bed to a full reimagining of the lot.</p>
+      </div>
+      <div class="aud-card reveal">
+        <p class="eyebrow">Small commercial</p>
+        <h3>Entries, courtyards &amp; planters</h3>
+        <p>Storefronts, offices, cafés, and small grounds that want a living, low-fuss landscape with real ecological value — kept to a scale I can do well.</p>
+      </div>
+    </div>
+    <p class="small-note">// I take on a limited number of small projects at a time, so each one gets real attention.</p>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow on-dark">Start a project</p>
+    <h2>Let's plant something that <em>gives back</em>.</h2>
+    <p class="sub">Tell me about your space and what you're hoping for. Photos welcome — that's how we begin. I'll reply with whether it's a good fit and what the first step looks like.</p>
+    <div class="contact-actions">
+      <!-- SWAP the email below -->
+      <a class="btn btn-bloom" href="mailto:avi@serviceberrygardens.com?subject=New%20project%20enquiry">Email me about your space <span class="arrow">→</span></a>
+    </div>
+    <!-- SWAP email + phone below -->
+    <p class="contact-line">avi@serviceberrygardens.com &nbsp;·&nbsp; <a href="tel:+14040000000">(678) 362-9440</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <div class="mark">Serviceberry Gardens</div>
+      <p class="ethos-line">Native landscape &amp; garden design for the Georgia Piedmont. Designed to leave the land better than we found it.</p>
+    </div>
+    <div class="f-contact">
+      <!-- SWAP contact details -->
+      <a href="mailto:avi@serviceberrygardens.com">avi@serviceberrygardens.com</a><br>
+      <a href="tel:+14040000000">(678) 362-9440</a><br>
+      Serving the greater Atlanta area
+    </div>
+    <p class="legal">© <span id="yr"></span> Serviceberry Gardens — Native Landscape &amp; Garden Design · Residential &amp; small commercial</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---- scroll reveal ---- */
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:.12, rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+  }
+
+  /* ---- before / after sliders (pointer + keyboard) ---- */
+  document.querySelectorAll('.ba').forEach(ba=>{
+    const frame  = ba.querySelector('.ba-frame');
+    const after  = ba.querySelector('.ba-after');
+    const handle = ba.querySelector('.ba-handle');
+    let pos = parseFloat(ba.dataset.pos || '55');
+
+    const apply = (p)=>{
+      pos = Math.max(2, Math.min(98, p));
+      frame.style.setProperty('--pos', pos + '%');
+      after.style.setProperty('--pos', pos + '%');
+      handle.style.left = pos + '%';
+      handle.setAttribute('aria-valuenow', Math.round(pos));
+    };
+    apply(pos);
+
+    const fromEvent = (clientX)=>{
+      const r = frame.getBoundingClientRect();
+      apply(((clientX - r.left) / r.width) * 100);
+    };
+
+    let dragging = false;
+    const start = (e)=>{ dragging = true; handle.focus(); if(e.touches){ fromEvent(e.touches[0].clientX);} else { fromEvent(e.clientX);} e.preventDefault(); };
+    const move  = (e)=>{ if(!dragging) return; fromEvent(e.touches ? e.touches[0].clientX : e.clientX); };
+    const end   = ()=> dragging = false;
+
+    frame.addEventListener('pointerdown', start);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', end);
+
+    handle.addEventListener('keydown', (e)=>{
+      const step = e.shiftKey ? 10 : 3;
+      if(e.key==='ArrowLeft'){ apply(pos-step); e.preventDefault(); }
+      else if(e.key==='ArrowRight'){ apply(pos+step); e.preventDefault(); }
+      else if(e.key==='Home'){ apply(2); e.preventDefault(); }
+      else if(e.key==='End'){ apply(98); e.preventDefault(); }
+    });
+  });
+</script>
+</body>
+</html>
